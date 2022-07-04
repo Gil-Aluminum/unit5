@@ -139,6 +139,10 @@ let modalBtn = document.getElementById("info-card")
 let modal = document.getElementById("modal")
 let closeBtn = document.getElementById("modal-close-btn")
 
+//modalBtn.addEventListener("click", toggleModal);
+modalBtn.addEventListener("click", () => {
+    modalContainer.classList.remove("hide");
+  });
 
 closeBtn.addEventListener("click", () => {
     modalContainer.innerHTML = "";
@@ -151,7 +155,7 @@ closeBtn.addEventListener("click", () => {
 //     }
 // }
 
-// //modalBtn.addEventListener("click", toggleModal);
+//modalBtn.addEventListener("click", toggleModal);
 // closeBtn.addEventListener("click", toggleModal);
 // window.addEventListener("click", windowOnClick);
 
