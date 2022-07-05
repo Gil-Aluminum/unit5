@@ -1,7 +1,6 @@
 const searchContainer = document.querySelector('.search-container');
 const gallery = document.querySelector('.gallery'); 
-
-
+let employee = [];
 
 
 // ------------------------------------------
@@ -39,12 +38,13 @@ function checkStatus(response){
 }
 
 
-function generatProfile(data){
+function generatProfile(data, index){
     gallery.innerHTML = "";
-  let html = ""
-  data.forEach((user) => {
-  html = `
-    <div class="card">
+    employee = data;
+    let html = ""
+    data.forEach((user) => {
+    html = `
+              <div class="card" data-index=${index}> 
                     <div class="card-img-container">
                         <img class="card-img" src= ${user.picture.large} alt="profile picture">
                     </div>
@@ -55,12 +55,11 @@ function generatProfile(data){
                     </div>
                 </div>
 `
-gallery.insertAdjacentHTML('beforeend', html)
+    gallery.insertAdjacentHTML('beforeend', html)
 
 });
 
 };
-
 
 // ------------------------------------------
 //  MODAL
@@ -68,12 +67,12 @@ gallery.insertAdjacentHTML('beforeend', html)
 
 const modalContainer = document.querySelector(".modal-container");
 
-function generatModal(data){
+function generatModal(index){
+    const clickedEmployee = employees[index]
     modalContainer.innerHTML = "";
     const newFormatPhone = user.phone.replace(/-/, " ");
     let date = new Date(dob.date);
     let htmlModal = ""
-    data.forEach((user) => {
     htmlModal = `
 
     <div id="modal" class="modal-container">
@@ -101,35 +100,18 @@ modalContainer.insertAdjacentHTML('beforeend', htmlModal)
 modalContainer.classList.remove("hide");
 
 
-});
-
 };
 
-// function generatList(data){
-//   const list = data.map(item => `
-//     <option value ='${item}'>${item}</option>
-//  `).join("");
-//   select.innerHTML = list;
-// };
 
-// function fetchBreedImage(){
-//   const breed = select.value;
-//   const img = card.querySelector("img");
-//   const p =card.querySelector("p");
-  
-//   fetchData(`https://dog.ceo/api/breed/${breed}/images/random`)
-//     .then(data => {
-//       img.src = data.message;
-//       img.alt = breed;
-//       p.textContent = `Click to view more ${breed}s`;
-//     })
-// }
+gallery.addEventListener( "click", (e) => {
+    const clickedCard = e.target.closest(".card");
+    const index = card.getAttribute("data-index");
+    generateModal(index);
+});
+
 // // ------------------------------------------
 // //  EVENT LISTENERS
 // // ------------------------------------------
-// select.addEventListener("change", fetchBreedImage);
-// card.addEventListener("click", fetchBreedImage);
-// form.addEventListener("submit", postData)
 
 
 
@@ -140,20 +122,22 @@ let modal = document.getElementById("modal")
 let closeBtn = document.getElementById("modal-close-btn")
 
 //modalBtn.addEventListener("click", toggleModal);
-modalBtn.addEventListener("click", () => {
-    modalContainer.classList.remove("hide");
-  });
+// modalBtn.addEventListener("click", () => {
+//     modalContainer.classList.remove("hide");
+//   });
 
-closeBtn.addEventListener("click", () => {
-    modalContainer.innerHTML = "";
+// closeBtn.addEventListener("click", () => {
+//     modalContainer.innerHTML = "";
+//     modalContainer.classList.add("hide");
+//   });
+
+document.querySelector('#modal').addEventListener( 'click', (e) => {
+   if (e.target.className === "modal-close-btn") {
+      modalContainer.innerHTML = "";
     modalContainer.classList.add("hide");
-  });
+  }
+});
 
-// function windowOnClick(event) {
-//     if (event.target === modal) {
-//         toggleModal();
-//     }
-// }
 
 //modalBtn.addEventListener("click", toggleModal);
 // closeBtn.addEventListener("click", toggleModal);
