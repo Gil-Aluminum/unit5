@@ -1,6 +1,6 @@
 const searchContainer = document.querySelector('.search-container');
 const gallery = document.querySelector('.gallery'); 
-let employee = [];
+let employees = [];
 
 
 // ------------------------------------------
@@ -40,9 +40,9 @@ function checkStatus(response){
 
 function generatProfile(data, index){
     gallery.innerHTML = "";
-    employee = data;
+    employees = data;
     let html = ""
-    data.forEach((user) => {
+    data.forEach((user,index) => {
     html = `
               <div class="card" data-index=${index}> 
                     <div class="card-img-container">
@@ -67,11 +67,10 @@ function generatProfile(data, index){
 
 const modalContainer = document.querySelector(".modal-container");
 
-function generatModal(index){
-    const clickedEmployee = employees[index]
-    modalContainer.innerHTML = "";
+function generateModal(index){
+    const user = employees[index]
     const newFormatPhone = user.phone.replace(/-/, " ");
-    let date = new Date(dob.date);
+    let date = new Date(user.dob.date);
     let htmlModal = ""
     htmlModal = `
 
@@ -86,7 +85,7 @@ function generatModal(index){
                         <hr>
                         <p class="modal-text">${newFormatPhone}</p>
                         <p class="modal-text">${user.location.state}</p>
-                        <p class="modal-text">${user.date.getMonth()}/${user.date.getDate()}/${user.date.getFullYear()}</p>
+                        <p class="modal-text">${date.getMonth()}/${date.getDate()}/${date.getFullYear()}</p>
                     </div>
                 </div>
 
@@ -96,42 +95,9 @@ function generatModal(index){
                 </div>
             </div>
 `
-modalContainer.insertAdjacentHTML('beforeend', htmlModal)
-modalContainer.classList.remove("hide");
+  document.body.insertAdjacentHTML("beforeend", htmlModal);
 
-
-};
-
-
-gallery.addEventListener( "click", (e) => {
-    const clickedCard = e.target.closest(".card");
-    const index = card.getAttribute("data-index");
-    generateModal(index);
-});
-
-// // ------------------------------------------
-// //  EVENT LISTENERS
-// // ------------------------------------------
-
-
-
-
-
-let modalBtn = document.getElementById("info-card")
-let modal = document.getElementById("modal")
-let closeBtn = document.getElementById("modal-close-btn")
-
-//modalBtn.addEventListener("click", toggleModal);
-// modalBtn.addEventListener("click", () => {
-//     modalContainer.classList.remove("hide");
-//   });
-
-// closeBtn.addEventListener("click", () => {
-//     modalContainer.innerHTML = "";
-//     modalContainer.classList.add("hide");
-//   });
-
-document.querySelector('#modal').addEventListener( 'click', (e) => {
+  document.querySelector('#modal').addEventListener( 'click', (e) => {
    if (e.target.className === "modal-close-btn") {
       modalContainer.innerHTML = "";
     modalContainer.classList.add("hide");
@@ -139,7 +105,43 @@ document.querySelector('#modal').addEventListener( 'click', (e) => {
 });
 
 
-//modalBtn.addEventListener("click", toggleModal);
-// closeBtn.addEventListener("click", toggleModal);
-// window.addEventListener("click", windowOnClick);
+};
+
+
+
+
+// // ------------------------------------------
+// //  EVENT LISTENERS
+// // ------------------------------------------
+
+gallery.addEventListener("click", (e) => {
+  const clickedCard = e.target.closest(".card");
+  const index = clickedCard.getAttribute("data-index");
+  generateModal(index);
+});
+
+
+
+
+// let modal = document.getElementById("modal")
+// let closeBtn = document.getElementById("modal-close-btn")
+
+// // // modalBtn.addEventListener("click", () => {
+// // //     modalContainer.classList.remove("hide");
+// // //   });
+
+// // closeBtn.addEventListener("click", () => {
+// //     modalContainer.innerHTML = "";
+// //     modalContainer.classList.add("hide");
+// //   });
+
+// document.querySelector('#modal').addEventListener( 'click', (e) => {
+//    if (e.target.className === "modal-close-btn") {
+//       modalContainer.innerHTML = "";
+//     modalContainer.classList.add("hide");
+//   }
+// });
+
+
+
 
