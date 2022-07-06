@@ -19,10 +19,6 @@ fetchData('https://randomuser.me/api/?results=12&inc=name, picture, email, locat
 .then(data => generatProfile(data.results))
 //.then(data => console.log(data.results))
 
-
-// // ------------------------------------------
-// //  HELPER FUNCTIONS
-// // ------------------------------------------
 function checkStatus(response){
   if(response.ok){
     return Promise.resolve(response);
@@ -30,6 +26,10 @@ function checkStatus(response){
     return Promise.reject(new Error(response.statusText));
   }
 }
+
+// // ------------------------------------------
+// //  USERS FUNCTION
+// // ------------------------------------------
 
 
 function generatProfile(data, index){
@@ -56,7 +56,7 @@ function generatProfile(data, index){
 };
 
 // ------------------------------------------
-//  MODAL
+//  MODAL FUNCTIONS
 // ------------------------------------------
 
 const modalContainer = document.querySelector(".modal-container");
@@ -99,15 +99,17 @@ function generateModal(index){
   const modalNext = document.getElementById("modal-next")
 
   modalPrev.addEventListener("click", (e) => {
+           document.querySelector("#modal").remove();
+
        console.log("prev")
        moveModalPrev()
-       document.querySelector("#modal").remove();
     })
 
     modalNext.addEventListener("click", (e) => {
+             document.querySelector("#modal").remove();
+
        console.log("next")
        moveModalNext()
-       document.querySelector("#modal").remove();
   });
 
 
@@ -115,11 +117,10 @@ function generateModal(index){
 
 
 // // ------------------------------------------
-// //  EVENT LISTENERS
+// //  EVENT LISTENERS AND FUNCTIONS
 // // ------------------------------------------
 
-//const modalPrev = document.getElementById("modal-prev")
-// const modalNext = document.getElementById("modal-next")
+
 
 gallery.addEventListener("click", (e) => {
   const clickedCard = e.target.closest(".card");
@@ -150,20 +151,28 @@ function moveModalNext() {
   }
 }
 
+// // ------------------------------------------
+// //  SEARCH BAR
+// // ------------------------------------------
+  
+searchContainer.addEventListener("input", (e) => {
+   let searchText = e.target.value;
+   searchText = searchText.toUpperCase();
+   let filteredList = employees.filter((user) => {
+     return (
+       user.name.first.toUpperCase().includes(searchText) ||
+       user.name.last.toUpperCase().includes(searchText)
+     );
+   });
+   if (filteredList.length > 0) {
+    generatProfile(filteredList);
+    } else {
+     gallery.innerHTML = `Sorry no results for "${searchText}" please try a different name.`;
+     generatProfile(filteredList)
+   }
+  
+ });
 
-
-
-// // closeBtn.addEventListener("click", () => {
-// //     modalContainer.innerHTML = "";
-// //     modalContainer.classList.add("hide");
-// //   });
-
-// document.querySelector('#modal').addEventListener( 'click', (e) => {
-//    if (e.target.className === "modal-close-btn") {
-//       modalContainer.innerHTML = "";
-//     modalContainer.classList.add("hide");
-//   }
-// });
 
 
 
