@@ -93,6 +93,21 @@ function generateModal(index){
 
   document.querySelector(".modal-close-btn").addEventListener("click", (e) => {
     document.querySelector("#modal").remove();
+
+    })
+  const modalPrev = document.getElementById("modal-prev")
+  const modalNext = document.getElementById("modal-next")
+
+  modalPrev.addEventListener("click", (e) => {
+       console.log("prev")
+       moveModalPrev()
+       document.querySelector("#modal").remove();
+    })
+
+    modalNext.addEventListener("click", (e) => {
+       console.log("next")
+       moveModalNext()
+       document.querySelector("#modal").remove();
   });
 
 
@@ -103,8 +118,8 @@ function generateModal(index){
 // //  EVENT LISTENERS
 // // ------------------------------------------
 
-const modalPrev = document.getElementById("modal-prev")
-const modalNext = document.getElementById("modal-next")
+//const modalPrev = document.getElementById("modal-prev")
+// const modalNext = document.getElementById("modal-next")
 
 gallery.addEventListener("click", (e) => {
   const clickedCard = e.target.closest(".card");
@@ -113,16 +128,7 @@ gallery.addEventListener("click", (e) => {
   generateModal(index);
 });
 
-modalPrev.addEventListener("click", (e) => {
- console.log("prev")
- moveModalPrev()
-})
 
-modalNext.addEventListener("click", (e) => {
-   console.log("next")
-   moveModalNext()
-
-})
 
 function moveModalPrev() {
   if (modalIndex > 0) {
