@@ -1,6 +1,7 @@
 const searchContainer = document.querySelector('.search-container');
 const gallery = document.querySelector('.gallery'); 
 let employees = [];
+let modalIndex = 0;
 
 
 // ------------------------------------------
@@ -17,13 +18,6 @@ function fetchData(url){
 fetchData('https://randomuser.me/api/?results=12&inc=name, picture, email, location, phone, dob&noinfo &nat=US')
 .then(data => generatProfile(data.results))
 //.then(data => console.log(data.results))
-
-
-
-
-
-
-
 
 
 // // ------------------------------------------
@@ -97,38 +91,61 @@ function generateModal(index){
 `
   document.body.insertAdjacentHTML("beforeend", htmlModal);
 
-  document.querySelector('#modal').addEventListener( 'click', (e) => {
-   if (e.target.className === "modal-close-btn") {
-      modalContainer.innerHTML = "";
-    modalContainer.classList.add("hide");
-  }
-});
+  document.querySelector(".modal-close-btn").addEventListener("click", (e) => {
+    document.querySelector("#modal").remove();
+  });
 
 
 };
-
-
 
 
 // // ------------------------------------------
 // //  EVENT LISTENERS
 // // ------------------------------------------
 
+const modalPrev = document.getElementById("modal-prev")
+const modalNext = document.getElementById("modal-next")
+
 gallery.addEventListener("click", (e) => {
   const clickedCard = e.target.closest(".card");
   const index = clickedCard.getAttribute("data-index");
+  modalIndex = index;
   generateModal(index);
 });
 
+modalPrev.addEventListener("click", (e) => {
+ console.log("prev")
+ moveModalPrev()
+})
+
+modalNext.addEventListener("click", (e) => {
+   console.log("next")
+   moveModalNext()
+
+})
+
+function moveModalPrev() {
+  if (modalIndex > 0) {
+    modalIndex--;
+    generateModal(modalIndex);
+  } else {
+    modalIndex = 11;
+    generateModal(modalIndex);
+  }
+}
+
+function moveModalNext() {
+  if (modalIndex < employees.length - 1) {
+    modalIndex++;
+    generateModal(modalIndex);
+  } else {
+    modalIndex = 0;
+    generateModal(modalIndex);
+  }
+}
 
 
 
-// let modal = document.getElementById("modal")
-// let closeBtn = document.getElementById("modal-close-btn")
-
-// // // modalBtn.addEventListener("click", () => {
-// // //     modalContainer.classList.remove("hide");
-// // //   });
 
 // // closeBtn.addEventListener("click", () => {
 // //     modalContainer.innerHTML = "";
