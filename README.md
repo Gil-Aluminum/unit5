@@ -10,3 +10,10 @@ Additions that were not defined in the project:
 -----at \css\styles.css
 	* Made the h1 bigger and Black.
 	* Background color "twitter blue"
+
+
+
+Markup : * Bullet list
+              * Nested bullet
+                  * Sub-nested bullet etc
+          * Bullet list item 2
