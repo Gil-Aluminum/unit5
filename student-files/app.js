@@ -80,7 +80,7 @@ function generateModal(index){
                         <p class="modal-text cap">${user.location.city}</p>
                         <hr>
                         <p class="modal-text">${newFormatPhone}</p>
-                        <p class="modal-text">${user.location.state}</p>
+                        <p class="modal-text">${user.location.street.number}, ${user.location.street.name}, ${user.location.city}, ${user.location.state}, ${user.location.postcode}</p>
                         <p class="modal-text">${date.getMonth()}/${date.getDate()}/${date.getFullYear()}</p>
                     </div>
                 </div>
