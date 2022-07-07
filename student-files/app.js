@@ -2,6 +2,7 @@ const searchContainer = document.querySelector('.search-container');
 const gallery = document.querySelector('.gallery'); 
 let employees = [];
 let modalIndex = 0;
+const url = 'https://randomuser.me/api/?results=12&inc=name, picture, email, location, phone, dob&noinfo &nat=US'
 
 
 // ------------------------------------------
@@ -13,11 +14,13 @@ function fetchData(url){
          .then(res => res.json())
          .catch(error => console.log("Looks like there was a problem", error))
 }
-//'https://randomuser.me/api/?results=12&inc=name, picture, email, location, phone, dob&noinfo &nat=US'
 
-fetchData('https://randomuser.me/api/?results=12&inc=name, picture, email, location, phone, dob&noinfo &nat=US')
-.then(data => generatProfile(data.results))
-//.then(data => console.log(data.results))
+fetchData(url)
+.then(data => {
+   employees = data.results
+   filteredList = data.results
+   generatProfile(data.results);
+});
 
 function checkStatus(response){
   if(response.ok){
@@ -34,7 +37,6 @@ function checkStatus(response){
 
 function generatProfile(data, index){
     gallery.innerHTML = "";
-    employees = data;
     let html = ""
     data.forEach((user,index) => {
     html = `
@@ -62,7 +64,7 @@ function generatProfile(data, index){
 const modalContainer = document.querySelector(".modal-container");
 
 function generateModal(index){
-    const user = employees[index]
+    const user = filteredList[index]
     const newFormatPhone = user.phone.replace(/-/, " ");
     let date = new Date(user.dob.date);
     let htmlModal = ""
@@ -91,7 +93,7 @@ function generateModal(index){
 `
   document.body.insertAdjacentHTML("beforeend", htmlModal);
 
-  document.querySelector(".modal-close-btn").addEventListener("click", (e) => {
+    document.querySelector(".modal-close-btn").addEventListener("click", (e) => {
     document.querySelector("#modal").remove();
 
     })
@@ -99,16 +101,12 @@ function generateModal(index){
   const modalNext = document.getElementById("modal-next")
 
   modalPrev.addEventListener("click", (e) => {
-           document.querySelector("#modal").remove();
-
-       console.log("prev")
+       document.querySelector("#modal").remove();
        moveModalPrev()
     })
 
     modalNext.addEventListener("click", (e) => {
-             document.querySelector("#modal").remove();
-
-       console.log("next")
+       document.querySelector("#modal").remove();
        moveModalNext()
   });
 
@@ -121,7 +119,6 @@ function generateModal(index){
 // // ------------------------------------------
 
 
-
 gallery.addEventListener("click", (e) => {
   const clickedCard = e.target.closest(".card");
   const index = clickedCard.getAttribute("data-index");
@@ -130,19 +127,18 @@ gallery.addEventListener("click", (e) => {
 });
 
 
-
 function moveModalPrev() {
   if (modalIndex > 0) {
     modalIndex--;
     generateModal(modalIndex);
   } else {
-    modalIndex = 11;
+    modalIndex = filteredList.length -1;
     generateModal(modalIndex);
   }
 }
 
 function moveModalNext() {
-  if (modalIndex < employees.length - 1) {
+  if (modalIndex < filteredList.length - 1) {
     modalIndex++;
     generateModal(modalIndex);
   } else {
@@ -158,7 +154,7 @@ function moveModalNext() {
 searchContainer.addEventListener("input", (e) => {
    let searchText = e.target.value;
    searchText = searchText.toUpperCase();
-   let filteredList = employees.filter((user) => {
+   filteredList = employees.filter((user) => {
      return (
        user.name.first.toUpperCase().includes(searchText) ||
        user.name.last.toUpperCase().includes(searchText)
@@ -168,7 +164,6 @@ searchContainer.addEventListener("input", (e) => {
     generatProfile(filteredList);
     } else {
      gallery.innerHTML = `Sorry no results for "${searchText}" please try a different name.`;
-     generatProfile(filteredList)
    }
   
  });
